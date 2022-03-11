@@ -42,13 +42,17 @@ export default {
     height: 400px;
     background-image: var(--imageFilm);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 290px;
     padding: 5px;
     margin: 10px;
     background-position: center;
     justify-content: space-between;
     align-items: center;
     text-align: center;    
+    transition: background-size .2s;
+}
+.film-card:hover {
+    background-size: 330px;
 }
 .film-card::before {
     position: absolute;

@@ -20,7 +20,9 @@ export default {
         sendQuery() {
             let query = document.querySelector(".search-input")
             let titleSite = document.querySelector(".films-title")
+
             this.$emit('send-query', query.value)
+
             titleSite.textContent = `Результат поиска по запросу ${query.value}`
             query.value = ""
         }
