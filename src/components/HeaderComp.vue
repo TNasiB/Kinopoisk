@@ -5,7 +5,7 @@
                 <span class="header__logo">Кинопоиск на минималках</span>
                 <div class="setting-wrapper flex">
                     <button @click="sortFilms" class="top">Сортировать по рейтингу</button>
-                    <button @click="getFilms" class="top">ТОП 20</button>
+                    <button @click="getFilms" class="top">ТОП ФИЛЬМОВ</button>
                     <SearchInput @send-query="showQuery"/>
                 </div>
             </div>
@@ -27,8 +27,7 @@ export default {
         getFilms() {
             this.$emit('get-films')
             let titleSite = document.querySelector(".films-title")
-            titleSite.textContent = `Топ 20 фильмов`
-
+            titleSite.textContent = `ТОП ФИЛЬМОВ`
         },
         sortFilms() {
             this.$emit('sort-films')
@@ -37,7 +36,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 header {
     color: #fff;
     background-color: #8F00FF;

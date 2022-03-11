@@ -1,8 +1,23 @@
 <template>
   <div id="app">
-    <HeaderComponent @get-films="getFilms" @send-query="getQuery" @sort-films="sortFilms"/>
-    <FilmsWrapper :query="query" :films="films" @show-modal="showModal"/>
-    <ModalFilm :film="this.film"></ModalFilm>
+    <HeaderComponent
+    @get-films="getFilms"
+    @send-query="getQuery" 
+    @sort-films="sortFilms"
+    />
+
+    <FilmsWrapper 
+    :query="query"
+    :films="films" 
+    :page="page"
+    @show-modal="showModal"
+    @prev-page="prevPage"
+    @next-page="nextPage"
+    />
+
+    <ModalFilm 
+    :film="this.film"
+    ></ModalFilm>
   </div>
 </template>
 
@@ -22,7 +37,9 @@ export default {
     return {
       films: [],
       query: "",
-      film: {}
+      film: {},
+      sorted: false,
+      page: 1,
     }
   },
   methods: {
@@ -30,36 +47,64 @@ export default {
       this.film = film
     },
     sortFilms() {
-      this.films.sort((a, b) => a.rating > b.rating? -1 : 1)
+      if (this.sorted) {
+        this.films.sort((a, b) => a.rating > b.rating? 1 : -1)
+      } else {
+        this.films.sort((a, b) => a.rating > b.rating? -1 : 1)
+      }
+      this.sorted = !this.sorted
     },
     getQuery(query) {
-      fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${query}&page=1`, {
-          method: 'GET',
-          headers: {
-              'X-API-KEY': '',//Введите свой ключ от Api
-              'Content-Type': 'application/json',
-          },
-      })
-      .then(res => res.json())
-      .then(json => this.films = json.films)
+      if (query != "") {
+        this.page = 1
+        fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${query}&page=${this.page}`, {
+            method: 'GET',
+            headers: {
+                'X-API-KEY': 'd0ee1fcd-c57d-493f-b775-b9af926ea60b',//Введите свой ключ от Api
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(res => res.json())
+        .then(json => this.films = json.films)
+      } else {
+        alert("Запрос введен некорректно")
+      }
+      this.sorted = false
     },
     getFilms() {
-      fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS`, {
+      fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=${this.page}`, {
           method: 'GET',
           headers: {
-              'X-API-KEY': '', //Введите свой ключ от Api
+              'X-API-KEY': 'd0ee1fcd-c57d-493f-b775-b9af926ea60b', //Введите свой ключ от Api
               'Content-Type': 'application/json',
           },
       })
       .then(res => res.json())
       .then(json => this.films = json.films)
+      this.sorted = false
+    },
+    nextPage() {
+      if (this.page != 16) {
+        this.page++
+        this.getFilms()
+      } else {
+        alert("Последняя страница топа")
+      }
+    },
+    prevPage() {
+      if (this.page != 1) {
+        this.page--
+        this.getFilms()
+      } else {
+        alert("Первая страница топа")
+      }
     },
   },
   beforeCreate() {
-    fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS`, {
+    fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&`, {
     method: 'GET',
     headers: {
-      'X-API-KEY': '',
+      'X-API-KEY': 'd0ee1fcd-c57d-493f-b775-b9af926ea60b',
       'Content-Type': 'application/json',
       },
     })
