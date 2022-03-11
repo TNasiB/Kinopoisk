@@ -59,7 +59,7 @@ export default {
     fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS`, {
     method: 'GET',
     headers: {
-      'X-API-KEY': 'd0ee1fcd-c57d-493f-b775-b9af926ea60b',
+      'X-API-KEY': '',
       'Content-Type': 'application/json',
       },
     })
