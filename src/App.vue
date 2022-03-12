@@ -10,6 +10,7 @@
     :query="query"
     :films="films" 
     :page="page"
+    :pageIsVisible="pageIsVisible"
     @show-modal="showModal"
     @prev-page="prevPage"
     @next-page="nextPage"
@@ -40,6 +41,7 @@ export default {
       film: {},
       sorted: false,
       page: 1,
+      pageIsVisible: true,
     }
   },
   methods: {
@@ -56,16 +58,16 @@ export default {
     },
     getQuery(query) {
       if (query != "") {
-        this.page = 1
-        fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${query}&page=${this.page}`, {
+        fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${query}`, {
             method: 'GET',
             headers: {
-                'X-API-KEY': 'd0ee1fcd-c57d-493f-b775-b9af926ea60b',//Введите свой ключ от Api
+                'X-API-KEY': '',//Введите свой ключ от Api
                 'Content-Type': 'application/json',
             },
         })
         .then(res => res.json())
         .then(json => this.films = json.films)
+        this.pageIsVisible = false
       } else {
         alert("Запрос введен некорректно")
       }
@@ -75,13 +77,14 @@ export default {
       fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=${this.page}`, {
           method: 'GET',
           headers: {
-              'X-API-KEY': 'd0ee1fcd-c57d-493f-b775-b9af926ea60b', //Введите свой ключ от Api
+              'X-API-KEY': '', //Введите свой ключ от Api
               'Content-Type': 'application/json',
           },
       })
       .then(res => res.json())
       .then(json => this.films = json.films)
       this.sorted = false
+      this.pageIsVisible = true
     },
     nextPage() {
       if (this.page != 16) {
@@ -104,7 +107,7 @@ export default {
     fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&`, {
     method: 'GET',
     headers: {
-      'X-API-KEY': 'd0ee1fcd-c57d-493f-b775-b9af926ea60b',
+      'X-API-KEY': '',
       'Content-Type': 'application/json',
       },
     })

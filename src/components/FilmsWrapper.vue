@@ -2,7 +2,7 @@
     <section class="films">
         <div class="container">
             <h1 class="films-title">ТОП ФИЛЬМОВ</h1>
-            <div class="btns-wrapper">
+            <div class="btns-wrapper" :class="{ hide: !this.pageIsVisible }">
                 <button class="top" @click="prevPage">Предыдущая страница</button>
                 <p class="pageCounter"> {{this.page}} </p>
                 <button class="top" @click="nextPage">Следующая страница</button>
@@ -22,6 +22,7 @@ export default {
         films: {type: Array},
         film: {type: Object},
         page: {type: Number},
+        pageIsVisible: {type: Boolean},
     },
     components: {
         FilmCard,
@@ -41,6 +42,9 @@ export default {
 </script>
 
 <style scoped>
+.btns-wrapper.hide {
+    display: none;
+}
 .pageCounter {
     margin: 0 10px;
     font-size: 20px;
